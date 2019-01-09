@@ -1,0 +1,65 @@
+<form #form="ngForm" (ngSubmit)="onSubmit()">
+  <mat-card class="team-card">
+    <mat-card-title>
+      Muokkaa tapahtumaa
+    </mat-card-title>
+    <!--mat-form-field>
+      <input disabled matInput placeholder="Select the date..." [(ngModel)]="event.timestamp" name="date" [matDatepicker]="date">
+      <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+      <mat-datepicker disabled="false" #date></mat-datepicker>
+    </mat-form-field-->
+
+    <mat-card-content *ngIf="goal">
+      <mat-form-field>
+        <mat-select placeholder="Maalintekijä" [(value)]="goal.player">
+          <mat-option *ngFor="let p of getPlayers(goal.team)" [value]="p.team + '_' + p.number">
+            #{{ p.number }} {{ p.firstName }} {{ p.lastName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select placeholder="Syöttäjä" [(value)]="goal.assist1">
+          <mat-option [value]="null"> -- ei syöttäjää --</mat-option>
+          <mat-option *ngFor="let p of getPlayers(goal.team)" [value]="p.team + '_' + p.number">
+            #{{ p.number }} {{ p.firstName }} {{ p.lastName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select placeholder="2. syöttäjä" [(value)]="goal.assist2">
+          <mat-option [value]="null"> -- ei 2. syöttäjää --</mat-option>
+          <mat-option *ngFor="let p of getPlayers(goal.team)" [value]="p.team + '_' + p.number">
+            #{{ p.number }} {{ p.firstName }} {{ p.lastName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-card-content>
+
+    <mat-card-content *ngIf="penalty">
+      <mat-form-field>
+        <mat-select placeholder="Rangaistu sika" [(value)]="penalty.player">
+          <mat-option *ngFor="let p of getPlayers(penalty.team)" [value]="p.team + '_' + p.number">
+            #{{ p.number }} {{ p.firstName }} {{ p.lastName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select placeholder="Minuutit" [(value)]="minutes">
+          <mat-option *ngFor="let m of penaltyMinutes" [value]="m">
+            {{ m.readable }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select placeholder="Syy" [(value)]="penalty.reason">
+          <mat-option [value]="'Tuntematon rangaistus'">--ei tiedossa--</mat-option>
+          <mat-option *ngFor="let r of penaltyReasons" [value]="r">{{r}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button mat-button type="submit">Tallenna</button>
+    </mat-card-actions>
+  </mat-card>
+</form>

@@ -1,0 +1,37 @@
+<form #form="ngForm" (ngSubmit)="onSubmit()">
+  <mat-card class="team-card">
+    <mat-card-title>
+      Muokkaa peliä
+    </mat-card-title>
+    <mat-card-content *ngIf="game">
+      <!--mat-form-field>
+        <input disabled matInput placeholder="Select the date..." [(ngModel)]="team.date" name="date" [matDatepicker]="date">
+        <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+        <mat-datepicker disabled="false" #date></mat-datepicker>
+      </mat-form-field-->
+      <mat-form-field>
+        <input type="text" placeholder="Numero" matInput [(ngModel)]="game.id" name="id">
+      </mat-form-field>
+      <mat-form-field>
+        <input type="text" placeholder="XX:00" matInput [(ngModel)]="game.schedule" name="schedule">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select placeholder="Kotijoukkue" [(value)]="game.home">
+          <mat-option *ngFor="let team of teams" [value]="team.id">
+            {{ team.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select placeholder="Vierasjoukkue" [(value)]="game.away">
+          <mat-option *ngFor="let team of teams" [value]="team.id">
+            {{ team.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button type="submit">Tallenna</button>
+    </mat-card-actions>
+  </mat-card>
+</form>

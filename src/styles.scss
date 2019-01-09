@@ -1,1 +1,142 @@
 /* You can add global styles to this file, and also import other style files */
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Material Icons'),
+  local('MaterialIcons-Regular'),
+  url(/assets/fonts/MaterialIcons-Regular.woff2) format('woff2'),
+  url(/assets/fonts/MaterialIcons-Regular.woff) format('woff'),
+  url(/assets/fonts/MaterialIcons-Regular.ttf) format('truetype');
+}
+
+.material-icons {
+  //noinspection CssNoGenericFontName
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px; /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+
+
+/* For use in src/lib/core/theming/_palette.scss */
+$mat-perhe-blue: (
+  50 : #e3e6ea,
+  100 : #b9bfcb,
+  200 : #8b95a9,
+  300 : #5c6b87,
+  400 : #394b6d,
+  500 : #162b53,
+  600 : #13264c,
+  700 : #102042,
+  800 : #0c1a39,
+  900 : #061029,
+  A100 : #6487ff,
+  A200 : #3160ff,
+  A400 : #0039fd,
+  A700 : #0033e4,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #ffffff,
+    400 : #ffffff,
+    500 : #ffffff,
+    600 : #ffffff,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : #000000,
+    A200 : #ffffff,
+    A400 : #ffffff,
+    A700 : #ffffff,
+  )
+);
+
+$mat-perhe-red: (
+  50 : #ebe3e4,
+  100 : #ccb9ba,
+  200 : #aa8b8d,
+  300 : #885d5f,
+  400 : #6f3a3c,
+  500 : #55171a,
+  600 : #4e1417,
+  700 : #441113,
+  800 : #3b0d0f,
+  900 : #2a0708,
+  A100 : #ff6666,
+  A200 : #ff3333,
+  A400 : #ff0000,
+  A700 : #e60000,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #ffffff,
+    400 : #ffffff,
+    500 : #ffffff,
+    600 : #ffffff,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : #000000,
+    A200 : #ffffff,
+    A400 : #ffffff,
+    A700 : #ffffff,
+  )
+);
+
+
+@import '~@angular/material/theming';
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$perhe-app-primary: mat-palette($mat-perhe-blue);
+$perhe-app-accent: mat-palette($mat-perhe-red, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$perhe-app-warn: mat-palette($mat-red);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$perhe-app-theme: mat-light-theme($perhe-app-primary, $perhe-app-accent, $perhe-app-warn);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($perhe-app-theme);
