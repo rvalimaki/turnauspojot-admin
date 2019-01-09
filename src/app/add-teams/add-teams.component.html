@@ -1,0 +1,23 @@
+<form #form="ngForm" (ngSubmit)="onSubmit()">
+  <mat-card class="team-card">
+    <mat-card-title>
+      Lisää joukkue
+    </mat-card-title>
+    <mat-card-content>
+      <!--mat-form-field>
+        <input disabled matInput placeholder="Select the date..." [(ngModel)]="team.date" name="date" [matDatepicker]="date">
+        <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+        <mat-datepicker disabled="false" #date></mat-datepicker>
+      </mat-form-field-->
+      <mat-form-field>
+        <input type="text" placeholder="Joukkueen tunnus" matInput [(ngModel)]="team.id" name="id">
+      </mat-form-field>
+      <mat-form-field>
+        <input type="text" placeholder="Joukkueen nimi" matInput [(ngModel)]="team.name" name="name">
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button type="submit">Tallenna</button>
+    </mat-card-actions>
+  </mat-card>
+</form>
