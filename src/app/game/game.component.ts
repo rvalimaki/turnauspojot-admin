@@ -3,7 +3,13 @@ import {Subscription} from 'rxjs';
 import {ActivatedRoute} from '@angular/router';
 
 import {AngularFireDatabase} from '@angular/fire/database';
-import {GameEvent} from '../game-plan/game-event';
+import {GameEvent, Goal, Penalty} from '../game-plan/game-event';
+import {MatDialog} from '@angular/material';
+import {AddEventComponent} from '../add-event/add-event.component';
+
+
+export const GOAL = 'goal';
+export const PENALTY = 'penalty';
 
 @Component({
   selector: 'app-game',
@@ -11,12 +17,19 @@ import {GameEvent} from '../game-plan/game-event';
   styleUrls: ['./game.component.scss']
 })
 export class GameComponent implements OnInit, OnDestroy {
-  game: any = {};
-  events: GameEvent[] = [];
 
   get nextEventNumber(): number {
     return this.events.length + 1;
   }
+
+  constructor(private db: AngularFireDatabase, private route: ActivatedRoute, private dialogs: MatDialog) {
+  }
+  game: any = {};
+
+  allEvents: GameEvent[] = [];
+  events: GameEvent[] = [];
+  private games: any[] = [];
+  private allGamesSubscription: Subscription;
 
   private _teamPlayerDict = {};
   private _playerDict = {};
@@ -27,22 +40,33 @@ export class GameComponent implements OnInit, OnDestroy {
   private teamSubscription: Subscription;
   private eventSubscription: Subscription;
 
-  get homeGoals(): number {
-    return this.events.filter(e => e.home && e.eventType === 'goals').length;
-  }
+  private static getPlayerId(p) {
+    if (p == null) {
+      return null;
+    }
 
-  get awayGoals(): number {
-    return this.events.filter(e => e.away && e.eventType === 'goals').length;
-  }
-
-  constructor(private db: AngularFireDatabase, private route: ActivatedRoute) {
+    return p.team + '_' + p.number;
   }
 
   ngOnInit() {
     const key = this.route.snapshot.params['key'];
 
     this.subscription = this.db.object('games/' + key).snapshotChanges()
-      .subscribe(res => this.game = res.payload.val());
+      .subscribe(res => {
+        this.game = res.payload.val();
+
+        if (this.game.homeGoals < 0) {
+          this.game.homeGoals = 0;
+        }
+        if (this.game.awayGoals < 0) {
+          this.game.awayGoals = 0;
+        }
+      });
+
+    this.allGamesSubscription = this.db.list('games').valueChanges().subscribe(
+      games => {
+        this.games = games;
+      });
 
     this.playerSubscription = this.db.list('players').valueChanges().subscribe(
       players => {
@@ -59,7 +83,12 @@ export class GameComponent implements OnInit, OnDestroy {
     this.eventSubscription = this.db.list('events').valueChanges().subscribe(
       events => {
         const ev: GameEvent[] = <GameEvent[]>events;
+
+        this.allEvents = ev;
+
         this.events = ev.filter(e => e.gameId === this.game.id);
+
+        this.events.sort((a, b) => a.id.localeCompare(b.id, [], {numeric: true}));
 
         for (const e of this.events) {
           e.date = isNaN(e.timestamp) ? null : new Date(e.timestamp);
@@ -73,6 +102,7 @@ export class GameComponent implements OnInit, OnDestroy {
     this.teamSubscription.unsubscribe();
     this.playerSubscription.unsubscribe();
     this.eventSubscription.unsubscribe();
+    this.allGamesSubscription.unsubscribe();
   }
 
   getPlayers(team: string) {
@@ -122,4 +152,91 @@ export class GameComponent implements OnInit, OnDestroy {
     }
   }
 
+  addEvent(eventType: string, id: any, number: string | number, team: string, homeAway: string, add: string, againstTeam: againstTeam) {
+    const ref = this.dialogs.open(AddEventComponent, {
+      data: {
+        eventType: eventType, id: id, number: number, team: team, homeAway: homeAway, add: add,
+        players: this.getPlayers(team), againstTeam: againstTeam
+      }
+    });
+
+    ref.afterClosed().subscribe(() => {
+      setTimeout(() => this.updateStats(team), 100);
+    });
+  }
+
+  private updateTeamStats(team: string) {
+    const t = this.getTeam(team);
+
+    t.goalsFor = this.allEvents.filter(e => e.team === team && e.eventType === GOAL).length;
+    t.goalsAgainst = this.allEvents.filter(e => e.againstTeam === team && e.eventType === GOAL).length;
+
+    t.penaltiesTaken = this.allEvents.filter(e => e.team === team && e.eventType === PENALTY)
+      .map(e => (<Penalty>e).minutes)
+      .reduce((acc, current) => acc + current, 0);
+    t.penaltiesDrawn = this.allEvents.filter(e => e.againstTeam === team && e.eventType === PENALTY)
+      .map(e => (<Penalty>e).minutes)
+      .reduce((acc, current) => acc + current, 0);
+
+    const startedGames = this.games.filter(g => g.started && (g.home === team || g.away === team));
+
+    t.draws = startedGames.filter(g => g.homeGoals === g.awayGoals).length;
+
+    const homeWins = startedGames.filter(g => g.homeGoals > g.awayGoals);
+    const awayWins = startedGames.filter(g => g.awayGoals > g.homeGoals);
+
+    t.homeWins = homeWins.filter(g => g.home === team).length;
+    t.awayLosses = homeWins.filter(g => g.away === team).length;
+
+    t.awayWins = awayWins.filter(g => g.away === team).length;
+    t.homeLosses = awayWins.filter(g => g.home === team).length;
+
+    t.wins = t.homeWins + t.awayWins;
+    t.losses = t.homeLosses + t.awayLosses;
+
+    t.points = t.wins * 2 + t.draws;
+
+    this.db.list('teams').set(t.id, t).then();
+  }
+
+  private updateStats(primaryTeam: string) {
+    this.game.homeGoals = this.events.filter(e => e.home && e.eventType === GOAL).length;
+    this.game.awayGoals = this.events.filter(e => e.away && e.eventType === GOAL).length;
+
+    this.game.started = true;
+
+    this.db.list('games').set(this.game.id, this.game).then();
+
+    setTimeout(() => {
+      this.updateTeamStats(this.game.home);
+      this.updateTeamStats(this.game.away);
+
+      this.updateTeamPlayerStats(primaryTeam);
+    }, 1000);
+  }
+
+  private updateTeamPlayerStats(team: string) {
+    const players = this.getPlayers(team);
+    const teamEvents = this.allEvents.filter(e => e.team === team);
+    const teamGoals: Goal[] = <Goal[]>teamEvents.filter(e => e.eventType === GOAL);
+    const teamPenalties: Penalty[] = <Penalty[]>teamEvents.filter(e => e.eventType === PENALTY);
+
+    for (const player of players) {
+      const id = GameComponent.getPlayerId(player);
+
+      player.goals = teamGoals.filter(g => g.player === id).length;
+      player.primaryAssists = teamGoals.filter(g => g.assist1 === id).length;
+      player.secondaryAssists = teamGoals.filter(g => g.assist2 === id).length;
+
+      player.assists = player.primaryAssists + player.secondaryAssists;
+
+      player.points = player.goals + player.assists;
+
+      player.penalties = teamPenalties.filter(p => p.player === id)
+        .map(p => p.minutes)
+        .reduce((acc, curr) => acc + curr, 0);
+
+      this.db.list('players').set(id, player).then();
+    }
+  }
 }

@@ -1,10 +1,10 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 
-import {ViewTeamsItem} from '../view-teams/view-teams-datasource';
 import {Subscription} from 'rxjs';
-import {ActivatedRoute, Router} from '@angular/router';
 import {GameEvent, Goal, Penalty} from '../game-plan/game-event';
 import {AngularFireDatabase} from '@angular/fire/database';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-add-event',
@@ -12,10 +12,6 @@ import {AngularFireDatabase} from '@angular/fire/database';
   styleUrls: ['./add-event.component.scss']
 })
 export class AddEventComponent implements OnInit, OnDestroy {
-  teams: any[] = [];
-  event: GameEvent;
-
-  minutes: { readable: string, minutes: number };
 
   get goal(): Goal {
     return this.event != null && this.event.eventType === 'goal' ? <Goal>this.event : null;
@@ -25,11 +21,18 @@ export class AddEventComponent implements OnInit, OnDestroy {
     return this.event != null && this.event.eventType === 'penalty' ? <Penalty>this.event : null;
   }
 
-  private _teamPlayerDict = {};
-  private _teamDict = {};
+  constructor(private db: AngularFireDatabase,
+              private dialog: MatDialogRef<AddEventComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
+    this.penaltyReasons.sort((a, b) => a.localeCompare(b));
+  }
 
-  private playerSubscription: Subscription;
-  private teamSubscription: Subscription;
+  teams: any[] = [];
+  event: GameEvent;
+
+  minutes: { readable: string, minutes: number };
+
+  private players = [];
+
   private eventSubscription: Subscription;
 
   penaltyMinutes: { readable: string, minutes: number }[] = [
@@ -94,20 +97,50 @@ export class AddEventComponent implements OnInit, OnDestroy {
     'JR Kieltäytyminen pelin aloittamisesta',
     'JR Rikkeet vaihtotapahtumassa',
   ];
+  scorerCtrl: FormControl = new FormControl();
+  scorerChanged = false;
 
-  constructor(private db: AngularFireDatabase, private route: ActivatedRoute, private router: Router) {
-    this.penaltyReasons.sort((a, b) => a.localeCompare(b));
+  assist1Ctrl: FormControl = new FormControl();
+  assist1Changed = false;
+
+  assist2Ctrl: FormControl = new FormControl();
+  assist2Changed = false;
+
+  pigCtrl: FormControl = new FormControl();
+  pigChanged = false;
+
+  static controlValue(c: FormControl) {
+    if (c == null) {
+      return null;
+    }
+
+    if (typeof c.value === 'string') {
+      return null;
+    }
+
+    return c.value;
+  }
+
+
+  static playerId(c: FormControl) {
+    const player = AddEventComponent.controlValue(c);
+
+    return player != null ? player.team + '_' + player.number : null;
   }
 
   ngOnInit() {
-    const params = this.route.snapshot.params;
+    console.log(JSON.stringify(this.data));
+    console.log(this.data);
 
-    const team = params['team'];
-    const eventType = params['eventType'];
-    const gameId = params['gameId'];
-    const number = params['number'];
-    const homeAway = params['homeAway'];
-    const add = params['add'];
+    const team = this.data['team'];
+    const eventType = this.data['eventType'];
+    const gameId = this.data['id'];
+    const number = this.data['number'];
+    const homeAway = this.data['homeAway'];
+    const add = this.data['add'];
+    const againstTeam = this.data['againstTeam'];
+
+    this.players = this.data['players'];
 
     const key = gameId + '_' + number;
 
@@ -115,15 +148,26 @@ export class AddEventComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         this.event = res.payload.val();
 
+        if (this.goal != null) {
+          this.scorerCtrl.setValue(this.getPlayerById(this.goal.player));
+          this.assist1Ctrl.setValue(this.getPlayerById(this.goal.assist1));
+          this.assist2Ctrl.setValue(this.getPlayerById(this.goal.assist2));
+        }
+
+        if (this.penalty != null) {
+          this.pigCtrl.setValue(this.getPlayerById(this.penalty.player));
+        }
+
         if (this.event == null) {
           switch (eventType) {
             case 'goal':
-              const goal = new Goal(team, gameId, number, eventType, homeAway);
+              const goal = new Goal(team, gameId, number, eventType, homeAway, againstTeam);
               goal.score = add;
               this.event = goal;
+
               break;
             case 'penalty':
-              this.event = new Penalty(team, gameId, number, eventType, homeAway);
+              this.event = new Penalty(team, gameId, number, eventType, homeAway, againstTeam);
               break;
             default:
               break;
@@ -136,61 +180,16 @@ export class AddEventComponent implements OnInit, OnDestroy {
 
         console.log(this.event);
       });
-
-    this.playerSubscription = this.db.list('players').valueChanges().subscribe(
-      players => {
-        this.setPlayerDictionary(players);
-      }
-    );
-
-    this.teamSubscription = this.db.list<ViewTeamsItem>('teams').valueChanges().subscribe(
-      teams => {
-        this.setTeamDictionary(teams);
-      }
-    );
   }
 
   ngOnDestroy() {
-    this.teamSubscription.unsubscribe();
-    this.playerSubscription.unsubscribe();
-
     if (this.eventSubscription != null) {
       this.eventSubscription.unsubscribe();
     }
   }
 
-  getPlayers(team: string) {
-    return this._teamPlayerDict[team] != null ? this._teamPlayerDict[team] : [];
-  }
-
-  getTeam(team: string) {
-    return this._teamDict[team];
-  }
-
-  getTeamName(team: string) {
-    const t = this.getTeam(team);
-
-    return t != null ? t.name : team;
-  }
-
-  private setPlayerDictionary(players: any[]) {
-    this._teamPlayerDict = {};
-
-    for (const p of players) {
-      if (this._teamPlayerDict[p.team] == null) {
-        this._teamPlayerDict[p.team] = [];
-      }
-
-      this._teamPlayerDict[p.team].push(p);
-    }
-  }
-
-  private setTeamDictionary(teams: any[]) {
-    this._teamDict = {};
-
-    for (const t of teams) {
-      this._teamDict[t.id] = t;
-    }
+  getPlayer(number: string) {
+    return this.players.find(p => p.number === number);
   }
 
   onSubmit() {
@@ -199,10 +198,53 @@ export class AddEventComponent implements OnInit, OnDestroy {
       this.penalty.readable = this.minutes.readable;
     }
 
+    if (this.goal != null) {
+      this.goal.player = AddEventComponent.playerId(this.scorerCtrl);
+      this.goal.assist1 = AddEventComponent.playerId(this.assist1Ctrl);
+      this.goal.assist2 = AddEventComponent.playerId(this.assist2Ctrl);
+    }
+
+    if (this.penalty != null) {
+      this.penalty.player = AddEventComponent.playerId(this.pigCtrl);
+    }
+
     this.db.list('events').set(this.event.id, this.event)
       .then(() => {
-        this.router.navigateByUrl('/game/' + this.event.gameId).then();
+        this.dialog.close();
       });
   }
 
+  getPlayerSelections(nullText: string = null, disallowed = []) {
+    const players = this.players.filter(p => !disallowed.includes(this.playerDisplayFn(p)));
+
+    return nullText ? [nullText].concat(players) : players;
+  }
+
+  filterPlayers(search: string, filter: boolean = true, disallowed = [], nullText: string = null): any[] {
+    return !filter || search == null || search === '' ? this.getPlayerSelections(nullText, disallowed) : this.players
+      .filter(p => !disallowed.includes(this.playerDisplayFn(p)))
+      .filter(p => this.playerDisplayFn(p).toLowerCase().includes(search.toLowerCase()));
+  }
+
+  playerDisplayFn(p?): string | undefined {
+    if (typeof p === 'string') {
+      return p;
+    }
+    return p ? `#${p.number} ${p.firstName} ${p.lastName}` : undefined;
+  }
+
+  getPlayerById(playerId: string) {
+    return this.getPlayer(playerId.split('_').pop());
+  }
+
+  removeEvent() {
+    const confirmation = confirm('Haluatko varmasti poistaa tapahtuman ' + this.event.id + '?');
+
+    if (confirmation) {
+      this.db.object('events/' + this.event.id).remove()
+        .then(() => {
+          this.dialog.close();
+        });
+    }
+  }
 }

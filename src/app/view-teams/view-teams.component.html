@@ -11,6 +11,11 @@
       <td mat-cell *matCellDef="let row">{{row.name}}</td>
     </ng-container>
 
+    <ng-container matColumnDef="record">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Pelit</th>
+      <td mat-cell *matCellDef="let row">{{getRecord(row)}}</td>
+    </ng-container>
+
     <ng-container matColumnDef="players">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Pelaajia</th>
       <td mat-cell *matCellDef="let row">{{getPlayers(row.id).length}}</td>

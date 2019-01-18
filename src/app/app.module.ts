@@ -8,6 +8,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NavComponent} from './nav/nav.component';
 import {LayoutModule} from '@angular/cdk/layout';
 import {
+  MatAutocompleteModule,
   MatButtonModule,
   MatCardModule,
   MatDatepickerModule,
@@ -28,7 +29,7 @@ import {
 import {AddTeamsComponent} from './add-teams/add-teams.component';
 import {ViewTeamsComponent} from './view-teams/view-teams.component';
 import {RouterModule} from '@angular/router';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {EditTeamComponent} from './edit-team/edit-team.component';
 import {AddPlayerComponent} from './add-player/add-player.component';
 import {GameComponent} from './game/game.component';
@@ -56,6 +57,7 @@ import {AngularFireDatabaseModule} from '@angular/fire/database';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     BrowserAnimationsModule,
 
     AngularFireModule.initializeApp(firebaseConfig),
@@ -80,6 +82,8 @@ import {AngularFireDatabaseModule} from '@angular/fire/database';
     MatSelectModule,
     MatOptionModule,
 
+    MatAutocompleteModule,
+
     MatGridListModule,
 
     RouterModule.forRoot([
@@ -91,12 +95,12 @@ import {AngularFireDatabaseModule} from '@angular/fire/database';
           {path: 'edit-team/:key', component: EditTeamComponent},
           {path: 'add-player/:teamId/:key', component: AddPlayerComponent},
           {path: 'game-plan', component: GamePlanComponent},
-          {path: 'game/:key', component: GameComponent},
-          {path: 'add-event/:eventType/:gameId/:number/:team/:homeAway/:add', component: AddEventComponent}
+          {path: 'game/:key', component: GameComponent}
         ]
       }])
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [AddEventComponent]
 })
 export class AppModule { }

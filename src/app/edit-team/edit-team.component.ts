@@ -52,10 +52,6 @@ export class EditTeamComponent implements OnInit, OnDestroy {
     return this._playerDict[team] != null ? this._playerDict[team] : [];
   }
 
-  removePlayer(key: string) {
-    this.db.object('players/' + key).remove().then();
-  }
-
   private setPlayerDictionary(players: any[]) {
     this._playerDict = {};
 
@@ -69,6 +65,17 @@ export class EditTeamComponent implements OnInit, OnDestroy {
     }
   }
 
+  removePlayer(key: string) {
+    this.db.object('players/' + key).remove().then();
+  }
+
+  confirmRemovePlayer(key: string) {
+    const confirmation = confirm('Haluatko varmasti poistaa pelaajan ' + key + '?');
+
+    if (confirmation) {
+      this.removePlayer(key);
+    }
+  }
 }
 
 

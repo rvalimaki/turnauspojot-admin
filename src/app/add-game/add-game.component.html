@@ -4,13 +4,14 @@
       Muokkaa peliä
     </mat-card-title>
     <mat-card-content *ngIf="game">
-      <!--mat-form-field>
-        <input disabled matInput placeholder="Select the date..." [(ngModel)]="team.date" name="date" [matDatepicker]="date">
-        <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
-        <mat-datepicker disabled="false" #date></mat-datepicker>
-      </mat-form-field-->
       <mat-form-field>
         <input type="text" placeholder="Numero" matInput [(ngModel)]="game.id" name="id">
+      </mat-form-field>
+      <mat-form-field>
+        <input disabled matInput placeholder="Valitse päivämäärä..." [(ngModel)]="game.date" name="date"
+               [matDatepicker]="date">
+        <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+        <mat-datepicker disabled="false" #date></mat-datepicker>
       </mat-form-field>
       <mat-form-field>
         <input type="text" placeholder="XX:00" matInput [(ngModel)]="game.schedule" name="schedule">

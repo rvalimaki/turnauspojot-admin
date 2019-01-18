@@ -19,7 +19,7 @@ export class ViewTeamsComponent implements OnInit, OnDestroy {
   _playerDict = {};
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['id', 'name', 'players', 'actions'];
+  displayedColumns = ['id', 'name', 'record', 'players', 'actions'];
 
   private subscription: Subscription;
   private playerSubscription: Subscription;
@@ -63,5 +63,13 @@ export class ViewTeamsComponent implements OnInit, OnDestroy {
 
       this._playerDict[p.team].push(p);
     }
+  }
+
+  getRecord(row: any) {
+    if (row == null || row.wins == null || row.draws == null || row.losses == null) {
+      return '-';
+    }
+
+    return row.wins + '-' + row.draws + '-' + row.losses;
   }
 }
