@@ -4,7 +4,7 @@ import {ActivatedRoute} from '@angular/router';
 
 import {AngularFireDatabase} from '@angular/fire/database';
 import {GameEvent, Goal, Penalty} from '../game-plan/game-event';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import {AddEventComponent} from '../add-event/add-event.component';
 
 

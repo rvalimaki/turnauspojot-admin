@@ -1,5 +1,6 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {MatPaginator, MatSort} from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import {GamePlanDatasource, GamePlanItem} from './game-plan-datasource';
 
 import {AngularFireDatabase} from '@angular/fire/database';
