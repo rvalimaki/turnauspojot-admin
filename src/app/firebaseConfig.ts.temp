@@ -1,0 +1,10 @@
+// Rename this file to firebaseConfig.ts and fill the blanks
+
+export const firebaseConfig = {
+  apiKey: 'yyy',
+  authDomain: 'xxx.firebaseapp.com',
+  databaseURL: 'https://xxx.firebaseio.com',
+  projectId: 'xxx',
+  storageBucket: 'xxx.appspot.com',
+  messagingSenderId: 'zzz'
+};
