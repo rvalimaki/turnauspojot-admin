@@ -1,8 +1,8 @@
 import {DataSource} from '@angular/cdk/collections';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
 import {map} from 'rxjs/operators';
 import {merge, Observable, of as observableOf} from 'rxjs';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
 
 export interface ViewTeamsItem {
   id: string;
@@ -31,12 +31,14 @@ export class ViewTeamsDataSource extends DataSource<ViewTeamsItem> {
     // stream for the data-table to consume.
     const dataMutations = [
       observableOf(this.data),
-      this.paginator.page,
-      this.sort.sortChange
+      this.paginator != null ? this.paginator.page : [],
+      this.sort != null ? this.sort.sortChange : []
     ];
 
     // Set the paginator's length
-    this.paginator.length = this.data.length;
+    if (this.paginator != null) {
+      this.paginator.length = this.data.length;
+    }
 
     return merge(...dataMutations).pipe(map(() => {
       return this.getPagedData(this.getSortedData([...this.data]));
@@ -55,8 +57,8 @@ export class ViewTeamsDataSource extends DataSource<ViewTeamsItem> {
    * this would be replaced by requesting the appropriate data from the server.
    */
   private getPagedData(data: ViewTeamsItem[]) {
-    const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
-    return data.splice(startIndex, this.paginator.pageSize);
+    const startIndex = this.paginator ? this.paginator.pageIndex * this.paginator.pageSize : 0;
+    return data.splice(startIndex, this.paginator != null ? this.paginator.pageSize : 100);
   }
 
   /**
@@ -64,7 +66,11 @@ export class ViewTeamsDataSource extends DataSource<ViewTeamsItem> {
    * this would be replaced by requesting the appropriate data from the server.
    */
   private getSortedData(data: ViewTeamsItem[]) {
-    if (!this.sort.active || this.sort.direction === '') {
+    if (data == null) {
+      return [];
+    }
+
+    if (this.sort == null || !this.sort.active || this.sort.direction === '') {
       return data;
     }
 

@@ -4,8 +4,8 @@ import {ActivatedRoute} from '@angular/router';
 
 import {AngularFireDatabase} from '@angular/fire/database';
 import {GameEvent, Goal, Penalty} from '../game-plan/game-event';
-import { MatDialog } from '@angular/material/dialog';
 import {AddEventComponent} from '../add-event/add-event.component';
+import {MatDialog} from '@angular/material/dialog';
 
 
 export const GOAL = 'goal';
@@ -24,6 +24,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
   constructor(private db: AngularFireDatabase, private route: ActivatedRoute, private dialogs: MatDialog) {
   }
+
   game: any = {};
 
   allEvents: GameEvent[] = [];
@@ -129,6 +130,22 @@ export class GameComponent implements OnInit, OnDestroy {
     return t != null ? t.name : team;
   }
 
+  get getHomeGoals() {
+    if (this.game == null || this.game.homeGoals == null || isNaN(this.game.homeGoals)) {
+      return 0;
+    }
+
+    return this.game.homeGoals;
+  }
+
+  get getAwayGoals() {
+    if (this.game == null || this.game.awayGoals == null || isNaN(this.game.awayGoals)) {
+      return 0;
+    }
+
+    return this.game.awayGoals;
+  }
+
   private setPlayerDictionary(players: any[]) {
     this._teamPlayerDict = {};
     this._playerDict = {};
@@ -152,7 +169,7 @@ export class GameComponent implements OnInit, OnDestroy {
     }
   }
 
-  addEvent(eventType: string, id: any, number: string | number, team: string, homeAway: string, add: string, againstTeam: againstTeam) {
+  addEvent(eventType: string, id: any, number: string | number, team: string, homeAway: string, add: string, againstTeam: string) {
     const ref = this.dialogs.open(AddEventComponent, {
       data: {
         eventType: eventType, id: id, number: number, team: team, homeAway: homeAway, add: add,
@@ -170,6 +187,8 @@ export class GameComponent implements OnInit, OnDestroy {
 
     t.goalsFor = this.allEvents.filter(e => e.team === team && e.eventType === GOAL).length;
     t.goalsAgainst = this.allEvents.filter(e => e.againstTeam === team && e.eventType === GOAL).length;
+
+    t.goalDiff = t.goalsFor - t.goalsAgainst;
 
     t.penaltiesTaken = this.allEvents.filter(e => e.team === team && e.eventType === PENALTY)
       .map(e => (<Penalty>e).minutes)

@@ -1,11 +1,11 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
 import {ViewTeamsDataSource, ViewTeamsItem} from './view-teams-datasource';
 
 import {AngularFireDatabase} from '@angular/fire/database';
 
 import {Subscription} from 'rxjs';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
 
 @Component({
   selector: 'app-view-teams',

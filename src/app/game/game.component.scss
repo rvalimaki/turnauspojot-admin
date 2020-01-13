@@ -1,9 +1,9 @@
 :host {
   .mat-raised-button {
-    min-width: 260px;
-    line-height: 80px;
+    min-width: 200px;
+    line-height: 3em;
 
-    font-size: 200%;
+    font-size: 130%;
 
     .mat-icon {
       width: 48px;
@@ -14,52 +14,61 @@
   }
 
 
-  div.tapahtumat {
-    margin-top: -180px;
-    width: 100%;
+  table.tapahtumat {
 
-    table {
-      width: 100%;
+    border: 10px solid #fff;
 
-      tr {
-        &.period {
-          background-color: #162b53;
+    box-shadow: 0 0 30px #bbb;
 
-          td {
-            color: #FFF;
-            text-align: center;
+    width: 96%;
 
-            padding: 2em;
-          }
-        }
+    border-collapse: collapse;
 
-        &.odd {
+    margin: 2%;
 
-        }
-
-        &.even {
-          background-color: #e3e6ea;
-        }
-
+    tr {
+      &.period {
+        background-color: #162b53;
 
         td {
-          &.home, &.away {
-            width: 45%;
-          }
+          color: #FFF;
+          text-align: center;
 
-          &.home {
-            text-align: right;
-          }
+          padding: 2em;
+        }
+      }
 
-          &.away {
-            text-align: left;
-          }
+      &.odd {
 
-          &.time {
-            width: 10%;
+      }
 
-            text-align: center;
-          }
+      &.even {
+        background-color: #e3e6ea;
+      }
+
+
+      td {
+        padding: 0.5em;
+
+        &.home, &.away {
+          width: 45%;
+        }
+
+        &.home {
+          text-align: right;
+        }
+
+        &.away {
+          text-align: left;
+        }
+
+        &.time {
+          width: 10%;
+
+          text-align: center;
+
+          background-color: #162b53;
+          color: #fff;
         }
       }
     }

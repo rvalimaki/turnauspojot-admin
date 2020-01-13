@@ -1,11 +1,11 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
 import {GamePlanDatasource, GamePlanItem} from './game-plan-datasource';
 
 import {AngularFireDatabase} from '@angular/fire/database';
 
 import {Subscription} from 'rxjs';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
 
 /*
 current: boolean;
@@ -78,7 +78,7 @@ events: GameEvent[];
 })
 export class GamePlanComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatSort) sort: MatSort = new MatSort();
   dataSource: GamePlanDatasource;
 
   _teamPlayerDict = {};

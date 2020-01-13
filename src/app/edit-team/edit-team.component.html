@@ -15,6 +15,10 @@
       <mat-form-field>
         <input type="text" placeholder="Joukkueen nimi" matInput [(ngModel)]="team.name" name="name">
       </mat-form-field>
+      <img *ngIf="team.logo" style="height: 200px; width: auto" src="/assets/logos/{{team.logo}}">
+      <mat-form-field>
+        <input type="text" placeholder="Logo" matInput [(ngModel)]="team.logo" name="logo">
+      </mat-form-field>
     </mat-card-content>
     <mat-card-actions>
       <button mat-button type="submit">Tallenna</button>
@@ -30,6 +34,7 @@
 <mat-card *ngFor="let p of getPlayers(team.id)">
   <span>{{ p.number }} </span>
   <span>{{ p.firstName}} </span>
+  <span *ngIf="p.funName"> "{{ p.funName}}" </span>
   <span>{{ p.lastName }} </span>
   <button mat-mini-fab [routerLink]="['/add-player', team.id, team.id + '_' + p.number]">
     <mat-icon>edit</mat-icon>
