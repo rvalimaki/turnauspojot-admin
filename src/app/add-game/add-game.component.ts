@@ -4,6 +4,7 @@ import {ViewTeamsItem} from '../view-teams/view-teams-datasource';
 import {Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AngularFireDatabase} from '@angular/fire/database';
+import {GAME_TYPES} from '../model/game-types';
 
 @Component({
   selector: 'app-add-game',
@@ -13,6 +14,7 @@ import {AngularFireDatabase} from '@angular/fire/database';
 export class AddGameComponent implements OnInit, OnDestroy {
   teams: any[] = [];
   game: any = {};
+  GAME_TYPES = GAME_TYPES;
 
   private subscription: Subscription;
   private gameSubscription: Subscription;

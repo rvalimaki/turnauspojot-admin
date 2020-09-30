@@ -121,7 +121,6 @@ export class AddEventComponent implements OnInit, OnDestroy {
     return c.value;
   }
 
-
   static playerId(c: FormControl) {
     const player = AddEventComponent.controlValue(c);
 
@@ -135,6 +134,7 @@ export class AddEventComponent implements OnInit, OnDestroy {
     const team = this.data['team'];
     const eventType = this.data['eventType'];
     const gameId = this.data['id'];
+    const gameType = this.data['gameType'];
     const number = this.data['number'];
     const homeAway = this.data['homeAway'];
     const add = this.data['add'];
@@ -161,13 +161,13 @@ export class AddEventComponent implements OnInit, OnDestroy {
         if (this.event == null) {
           switch (eventType) {
             case 'goal':
-              const goal = new Goal(team, gameId, number, eventType, homeAway, againstTeam);
+              const goal = new Goal(team, gameId, gameType, number, eventType, homeAway, againstTeam);
               goal.score = add;
               this.event = goal;
 
               break;
             case 'penalty':
-              this.event = new Penalty(team, gameId, number, eventType, homeAway, againstTeam);
+              this.event = new Penalty(team, gameId, gameType, number, eventType, homeAway, againstTeam);
               break;
             default:
               break;

@@ -8,6 +8,13 @@
         <input type="text" placeholder="Numero" matInput [(ngModel)]="game.id" name="id">
       </mat-form-field>
       <mat-form-field>
+        <mat-select placeholder="Tyyppi" [(value)]="game.gameType">
+          <mat-option *ngFor="let gameType of GAME_TYPES" [value]="gameType">
+            {{ gameType }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
         <input disabled matInput placeholder="Valitse päivämäärä..." [(ngModel)]="game.date" name="date"
                [matDatepicker]="date">
         <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>

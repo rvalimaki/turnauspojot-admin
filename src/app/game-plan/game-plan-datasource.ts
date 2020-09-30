@@ -7,6 +7,7 @@ import {MatSort} from '@angular/material/sort';
 
 export interface GamePlanItem {
   id: string;
+  gameType: string;
   schedule: string;
   home: string;
   away: string;

@@ -20,7 +20,7 @@ export class ViewTeamsComponent implements OnInit, OnDestroy {
   _playerDict = {};
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['id', 'name', 'record', 'players', 'actions'];
+  displayedColumns = ['id', 'name', 'logo', 'record', 'players', 'actions'];
 
   private subscription: Subscription;
   private playerSubscription: Subscription;

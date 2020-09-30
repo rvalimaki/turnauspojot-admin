@@ -1,17 +1,17 @@
 <div style="display: flex;">
   <div style="flex:1; padding: 1em;">
-    <h2>Koti: {{getTeamName(game.home)}} {{game.homeGoals}}</h2>
+    <h2>Koti: <a (click)="resetStats(game.home)">{{getTeamName(game.home)}}</a> {{game.homeGoals}}</h2>
 
     <div>
       <!--mat-card-->
       <button mat-raised-button color="primary"
-              (click)="addEvent('goal', game.id, nextEventNumber, game.home, 'home', (getHomeGoals + 1) + '-' + getAwayGoals, game.away)">
+              (click)="addEvent('goal', game.id, game.gameType, nextEventNumber, game.home, 'home', (getHomeGoals + 1) + '-' + getAwayGoals, game.away)">
         <mat-icon>add_circle</mat-icon>
         Maali (koti)
       </button>
       &nbsp;
       <button mat-raised-button color="warn"
-              (click)="addEvent('penalty', game.id, nextEventNumber, game.home, 'home', '', game.away)">
+              (click)="addEvent('penalty', game.id, game.gameType, nextEventNumber, game.home, 'home', '', game.away)">
         <mat-icon>error</mat-icon>
         Jäähy (koti)
       </button>
@@ -19,17 +19,17 @@
     </div>
   </div>
   <div style="flex:1; padding: 1em;">
-    <h2>{{game.awayGoals}} Vieras: {{getTeamName(game.away)}}</h2>
+    <h2>{{game.awayGoals}} Vieras: <a (click)="resetStats(game.away)">{{getTeamName(game.away)}}</a></h2>
     <div>
       <!--mat-card-->
       <button mat-raised-button color="primary"
-              (click)="addEvent('goal', game.id, nextEventNumber, game.away, 'away', getHomeGoals + '-' + (getAwayGoals + 1), game.home)">
+              (click)="addEvent('goal', game.id, game.gameType, nextEventNumber, game.away, 'away', getHomeGoals + '-' + (getAwayGoals + 1), game.home)">
         <mat-icon>add_circle</mat-icon>
         Maali (vieras)
       </button>
       &nbsp;
       <button mat-raised-button color="warn"
-              (click)="addEvent('penalty', game.id, nextEventNumber, game.away, 'away', '', game.home)">
+              (click)="addEvent('penalty', game.id, game.gameType, nextEventNumber, game.away, 'away', '', game.home)">
         <mat-icon>error</mat-icon>
         Jäähy (vieras)
       </button>
@@ -69,7 +69,7 @@
       </ng-template>
 
       <button mat-mini-fab
-              (click)="addEvent(e.eventType, game.id, e.number, e.team, e.home ? 'home' : 'away', '', e.againstTeam)">
+              (click)="addEvent(e.eventType, game.id, game.gameType, e.number, e.team, e.home ? 'home' : 'away', '', e.againstTeam)">
         <mat-icon>edit</mat-icon>
       </button>
     </td>

@@ -27,6 +27,11 @@ events: GameEvent[];
           <td mat-cell *matCellDef="let row">{{row.id}}</td>
         </ng-container>
 
+        <ng-container matColumnDef="gameType">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Tyyppi</th>
+          <td mat-cell *matCellDef="let row">{{row.gameType}}</td>
+        </ng-container>
+
         <ng-container matColumnDef="schedule">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Aika</th>
           <td mat-cell *matCellDef="let row">{{row.schedule}}</td>
@@ -88,7 +93,7 @@ export class GamePlanComponent implements OnInit, OnDestroy {
   nextGameId = 1;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['id', 'schedule', 'home', 'goals', 'away', 'actions'];
+  displayedColumns = ['id', 'gameType', 'schedule', 'home', 'goals', 'away', 'actions'];
 
   private subscription: Subscription;
   private playerSubscription: Subscription;

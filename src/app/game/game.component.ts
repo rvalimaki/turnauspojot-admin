@@ -6,6 +6,7 @@ import {AngularFireDatabase} from '@angular/fire/database';
 import {GameEvent, Goal, Penalty} from '../game-plan/game-event';
 import {AddEventComponent} from '../add-event/add-event.component';
 import {MatDialog} from '@angular/material/dialog';
+import {REGULAR_GAME_TYPES} from '../model/game-types';
 
 
 export const GOAL = 'goal';
@@ -169,10 +170,11 @@ export class GameComponent implements OnInit, OnDestroy {
     }
   }
 
-  addEvent(eventType: string, id: any, number: string | number, team: string, homeAway: string, add: string, againstTeam: string) {
+  addEvent(eventType: string, id: any, gameType: string,
+           number: string | number, team: string, homeAway: string, add: string, againstTeam: string) {
     const ref = this.dialogs.open(AddEventComponent, {
       data: {
-        eventType: eventType, id: id, number: number, team: team, homeAway: homeAway, add: add,
+        eventType: eventType, id: id, gameType: gameType, number: number, team: team, homeAway: homeAway, add: add,
         players: this.getPlayers(team), againstTeam: againstTeam
       }
     });
@@ -182,22 +184,47 @@ export class GameComponent implements OnInit, OnDestroy {
     });
   }
 
+  resetStats(primaryTeam: string) {
+    const started = this.events.length > 0;
+
+    this.game.started = started;
+
+    this.game.homeGoals = started ? this.events.filter(e => e.home && e.eventType === GOAL).length : null;
+    this.game.awayGoals = started ? this.events.filter(e => e.away && e.eventType === GOAL).length : null;
+
+    this.db.list('games').set(this.game.id, this.game).then();
+
+    setTimeout(() => {
+      this.updateTeamStats(this.game.home);
+      this.updateTeamStats(this.game.away);
+
+      this.updateTeamPlayerStats(primaryTeam);
+    }, 1000);
+  }
+
   private updateTeamStats(team: string) {
     const t = this.getTeam(team);
 
-    t.goalsFor = this.allEvents.filter(e => e.team === team && e.eventType === GOAL).length;
-    t.goalsAgainst = this.allEvents.filter(e => e.againstTeam === team && e.eventType === GOAL).length;
+    const regularEvents = this.allEvents
+      .filter(e => REGULAR_GAME_TYPES.includes(e.gameType)
+        && (e.team === team || e.againstTeam === team));
+
+    t.goalsFor = regularEvents.filter(e => e.team === team && e.eventType === GOAL).length;
+    t.goalsAgainst = regularEvents.filter(e => e.againstTeam === team && e.eventType === GOAL).length;
 
     t.goalDiff = t.goalsFor - t.goalsAgainst;
 
-    t.penaltiesTaken = this.allEvents.filter(e => e.team === team && e.eventType === PENALTY)
+    t.penaltiesTaken = regularEvents.filter(e => e.team === team && e.eventType === PENALTY)
       .map(e => (<Penalty>e).minutes)
       .reduce((acc, current) => acc + current, 0);
-    t.penaltiesDrawn = this.allEvents.filter(e => e.againstTeam === team && e.eventType === PENALTY)
+    t.penaltiesDrawn = regularEvents.filter(e => e.againstTeam === team && e.eventType === PENALTY)
       .map(e => (<Penalty>e).minutes)
       .reduce((acc, current) => acc + current, 0);
 
-    const startedGames = this.games.filter(g => g.started && (g.home === team || g.away === team));
+    const startedGames = this.games.filter(g =>
+      REGULAR_GAME_TYPES.includes(g.gameType)
+      && g.started
+      && (g.home === team || g.away === team));
 
     t.draws = startedGames.filter(g => g.homeGoals === g.awayGoals).length;
 
