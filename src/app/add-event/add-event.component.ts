@@ -2,7 +2,7 @@ import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 
 import {Subscription} from 'rxjs';
 import {GameEvent, Goal, Penalty} from '../game-plan/game-event';
-import {AngularFireDatabase} from '@angular/fire/database';
+import {AngularFireDatabase} from '@angular/fire/compat/database';
 import {FormControl} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 

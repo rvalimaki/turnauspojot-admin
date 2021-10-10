@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ViewTeamsDataSource, ViewTeamsItem} from './view-teams-datasource';
 
-import {AngularFireDatabase} from '@angular/fire/database';
+import {AngularFireDatabase} from '@angular/fire/compat/database';
 
 import {Subscription} from 'rxjs';
 import {MatPaginator} from '@angular/material/paginator';

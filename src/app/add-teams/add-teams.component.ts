@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 
-import {AngularFireDatabase} from '@angular/fire/database';
+import {AngularFireDatabase} from '@angular/fire/compat/database';
 
 @Component({
   selector: 'app-add-teams',

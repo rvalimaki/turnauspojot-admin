@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {GamePlanDatasource, GamePlanItem} from './game-plan-datasource';
 
-import {AngularFireDatabase} from '@angular/fire/database';
+import {AngularFireDatabase} from '@angular/fire/compat/database';
 
 import {Subscription} from 'rxjs';
 import {MatPaginator} from '@angular/material/paginator';

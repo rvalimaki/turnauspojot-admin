@@ -19,8 +19,9 @@ import {GamePlanComponent} from './game-plan/game-plan.component';
 import {AddGameComponent} from './add-game/add-game.component';
 import {AddEventComponent} from './add-event/add-event.component';
 import {firebaseConfig} from './firebaseConfig';
-import {AngularFireModule} from '@angular/fire';
-import {AngularFireDatabaseModule} from '@angular/fire/database';
+import {AngularFireModule} from '@angular/fire/compat';
+import {AngularFireDatabaseModule} from '@angular/fire/compat/database';
+import {MatDialogModule} from '@angular/material/dialog';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatButtonModule} from '@angular/material/button';
 import {MatSidenavModule} from '@angular/material/sidenav';
@@ -62,6 +63,9 @@ import {MatGridListModule} from '@angular/material/grid-list';
     AngularFireDatabaseModule,
 
     LayoutModule,
+
+    MatDialogModule,
+
     MatToolbarModule,
     MatButtonModule,
     MatSidenavModule,
