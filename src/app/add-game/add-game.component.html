@@ -1,29 +1,42 @@
+<br><br>
 <form #form="ngForm" (ngSubmit)="onSubmit()">
   <mat-card class="team-card">
-    <mat-card-title>
-      Muokkaa peliä
-    </mat-card-title>
+
+    <mat-card-header>
+      <mat-card-title>Muokkaa peliä</mat-card-title>
+    </mat-card-header>
+
     <mat-card-content *ngIf="game">
+
       <mat-form-field>
+        <mat-label>Numero</mat-label>
         <input type="text" placeholder="Numero" matInput [(ngModel)]="game.id" name="id">
       </mat-form-field>
+
       <mat-form-field>
+        <mat-label>Tyyppi</mat-label>
         <mat-select placeholder="Tyyppi" [(value)]="game.gameType">
           <mat-option *ngFor="let gameType of GAME_TYPES" [value]="gameType">
             {{ gameType }}
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field>
+
+      <mat-form-field style="display: none">
+        <mat-label>Päivämäärä</mat-label>
         <input disabled matInput placeholder="Valitse päivämäärä..." [(ngModel)]="game.date" name="date"
                [matDatepicker]="date">
         <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
         <mat-datepicker disabled="false" #date></mat-datepicker>
       </mat-form-field>
+
       <mat-form-field>
+        <mat-label>Kellonaika</mat-label>
         <input type="text" placeholder="XX:00" matInput [(ngModel)]="game.schedule" name="schedule">
       </mat-form-field>
+
       <mat-form-field>
+        <mat-label>Koti</mat-label>
         <mat-select placeholder="Kotijoukkue" [(value)]="game.home">
           <mat-option *ngFor="let team of teams" [value]="team.id">
             {{ team.name }}
@@ -31,6 +44,7 @@
         </mat-select>
       </mat-form-field>
       <mat-form-field>
+        <mat-label>Vieras</mat-label>
         <mat-select placeholder="Vierasjoukkue" [(value)]="game.away">
           <mat-option *ngFor="let team of teams" [value]="team.id">
             {{ team.name }}

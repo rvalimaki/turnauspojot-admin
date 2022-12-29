@@ -58,14 +58,10 @@ import {MatGridListModule} from '@angular/material/grid-list';
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
-
     LayoutModule,
-
     MatDialogModule,
-
     MatToolbarModule,
     MatButtonModule,
     MatSidenavModule,
@@ -74,20 +70,15 @@ import {MatGridListModule} from '@angular/material/grid-list';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
     MatDatepickerModule,
     MatNativeDateModule,
-
     MatSelectModule,
     MatOptionModule,
-
     MatAutocompleteModule,
-
     MatGridListModule,
-
     RouterModule.forRoot([
       {
         path: '', component: NavComponent, children: [
@@ -99,11 +90,11 @@ import {MatGridListModule} from '@angular/material/grid-list';
           {path: 'game-plan', component: GamePlanComponent},
           {path: 'game/:key', component: GameComponent}
         ]
-      }])
+      }
+    ])
   ],
   providers: [],
-  bootstrap: [AppComponent],
-  entryComponents: [AddEventComponent]
+  bootstrap: [AppComponent]
 })
 export class AppModule {
 }

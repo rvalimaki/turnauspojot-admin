@@ -3,7 +3,7 @@ import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {GameEvent, Goal, Penalty} from '../game-plan/game-event';
 import {AngularFireDatabase} from '@angular/fire/compat/database';
-import {FormControl} from '@angular/forms';
+import {UntypedFormControl} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 
 @Component({
@@ -97,19 +97,19 @@ export class AddEventComponent implements OnInit, OnDestroy {
     'JR Kieltäytyminen pelin aloittamisesta',
     'JR Rikkeet vaihtotapahtumassa',
   ];
-  scorerCtrl: FormControl = new FormControl();
+  scorerCtrl: UntypedFormControl = new UntypedFormControl();
   scorerChanged = false;
 
-  assist1Ctrl: FormControl = new FormControl();
+  assist1Ctrl: UntypedFormControl = new UntypedFormControl();
   assist1Changed = false;
 
-  assist2Ctrl: FormControl = new FormControl();
+  assist2Ctrl: UntypedFormControl = new UntypedFormControl();
   assist2Changed = false;
 
-  pigCtrl: FormControl = new FormControl();
+  pigCtrl: UntypedFormControl = new UntypedFormControl();
   pigChanged = false;
 
-  static controlValue(c: FormControl) {
+  static controlValue(c: UntypedFormControl) {
     if (c == null) {
       return null;
     }
@@ -121,7 +121,7 @@ export class AddEventComponent implements OnInit, OnDestroy {
     return c.value;
   }
 
-  static playerId(c: FormControl) {
+  static playerId(c: UntypedFormControl) {
     const player = AddEventComponent.controlValue(c);
 
     return player != null ? player.team + '_' + player.number : null;
@@ -230,7 +230,9 @@ export class AddEventComponent implements OnInit, OnDestroy {
     if (typeof p === 'string') {
       return p;
     }
-    return p ? `#${p.number} ${p.firstName} ${p.lastName}` : undefined;
+
+    const funName = p?.funName?.length > 0 ? '"' + p.funName + '" ' : '';
+    return p ? `#${p.number} ${p.firstName} ${funName}${p.lastName}` : undefined;
   }
 
   getPlayerById(playerId: string) {

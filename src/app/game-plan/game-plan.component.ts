@@ -75,9 +75,11 @@ events: GameEvent[];
     </div>
 
     <mat-card>
-      <button mat-fab [routerLink]="['/add-game', nextGameId]">
-        <mat-icon>add</mat-icon>
-      </button>
+      <mat-card-actions>
+        <button mat-fab [routerLink]="['/add-game', nextGameId]">
+          <mat-icon>add</mat-icon>
+        </button>
+      </mat-card-actions>
     </mat-card>`,
   styleUrls: ['./game-plan.component.scss'],
 })
