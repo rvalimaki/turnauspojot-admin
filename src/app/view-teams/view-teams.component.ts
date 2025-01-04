@@ -1,16 +1,16 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {ViewTeamsDataSource, ViewTeamsItem} from './view-teams-datasource';
+import { Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { ViewTeamsDataSource, ViewTeamsItem } from "./view-teams-datasource";
 
-import {AngularFireDatabase} from '@angular/fire/compat/database';
+import { AngularFireDatabase } from "@angular/fire/compat/database";
 
-import {Subscription} from 'rxjs';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatSort} from '@angular/material/sort';
+import { Subscription } from "rxjs";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatSort } from "@angular/material/sort";
 
 @Component({
-  selector: 'app-view-teams',
-  templateUrl: './view-teams.component.html',
-  styleUrls: ['./view-teams.component.scss'],
+  selector: "app-view-teams",
+  templateUrl: "./view-teams.component.html",
+  styleUrls: ["./view-teams.component.scss"],
 })
 export class ViewTeamsComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -20,29 +20,31 @@ export class ViewTeamsComponent implements OnInit, OnDestroy {
   _playerDict = {};
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['id', 'name', 'logo', 'record', 'players', 'actions'];
+  displayedColumns = ["id", "name", "logo", "record", "players", "actions"];
 
   private subscription: Subscription;
   private playerSubscription: Subscription;
 
-  constructor(private db: AngularFireDatabase) {
-
-  }
+  constructor(private db: AngularFireDatabase) {}
 
   ngOnInit() {
     this.dataSource = new ViewTeamsDataSource(this.paginator, this.sort);
 
-    this.playerSubscription = this.db.list('players').valueChanges().subscribe(
-      players => {
+    this.playerSubscription = this.db
+      .list("players")
+      .valueChanges()
+      .subscribe((players) => {
         this.setPlayerDictionary(players);
-      }
-    );
+      });
 
-    this.subscription = this.db.list<ViewTeamsItem>('teams').valueChanges().subscribe(data => {
-      console.log('data streaming');
-      this.dataSource = new ViewTeamsDataSource(this.paginator, this.sort);
-      this.dataSource.data = data;
-    });
+    this.subscription = this.db
+      .list<ViewTeamsItem>("teams")
+      .valueChanges()
+      .subscribe((data) => {
+        console.log("data streaming");
+        this.dataSource = new ViewTeamsDataSource(this.paginator, this.sort);
+        this.dataSource.data = data;
+      });
   }
 
   ngOnDestroy() {
@@ -67,10 +69,15 @@ export class ViewTeamsComponent implements OnInit, OnDestroy {
   }
 
   getRecord(row: any) {
-    if (row == null || row.wins == null || row.draws == null || row.losses == null) {
-      return '-';
+    if (
+      row == null ||
+      row.wins == null ||
+      row.draws == null ||
+      row.losses == null
+    ) {
+      return "-";
     }
 
-    return row.wins + '-' + row.draws + '-' + row.losses;
+    return row.wins + "-" + row.draws + "-" + row.losses;
   }
 }

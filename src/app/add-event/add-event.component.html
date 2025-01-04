@@ -1,5 +1,5 @@
 <form #form="ngForm">
-  <h1 mat-dialog-title>Muokkaa tapahtumaa </h1>
+  <h1 mat-dialog-title>Muokkaa tapahtumaa</h1>
   <!--mat-form-field>
     <input disabled matInput placeholder="Select the date..." [(ngModel)]="event.timestamp" name="date" [matDatepicker]="date">
     <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
@@ -9,48 +9,92 @@
   <div mat-dialog-content *ngIf="goal">
     <mat-form-field>
       <mat-label>Maalintekijä</mat-label>
-      <input type="text" matInput
-             [formControl]="scorerCtrl"
-             [matAutocomplete]="scorerAuto"
-             (input)="scorerChanged = true"
-             #scorer>
-      <mat-autocomplete autoActiveFirstOption #scorerAuto="matAutocomplete" [displayWith]="playerDisplayFn">
-        <mat-option *ngFor="let p of filterPlayers(scorer.value, scorerChanged, [assist1.value, assist2.value])"
-                    [value]="p">
-          {{playerDisplayFn(p)}}
+      <input
+        type="text"
+        matInput
+        [formControl]="scorerCtrl"
+        [matAutocomplete]="scorerAuto"
+        (input)="scorerChanged = true"
+        #scorer
+      />
+      <mat-autocomplete
+        autoActiveFirstOption
+        #scorerAuto="matAutocomplete"
+        [displayWith]="playerDisplayFn"
+      >
+        <mat-option
+          *ngFor="
+            let p of filterPlayers(scorer.value, scorerChanged, [
+              assist1.value,
+              assist2.value,
+            ])
+          "
+          [value]="p"
+        >
+          {{ playerDisplayFn(p) }}
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Syöttäjä</mat-label>
-      <input type="text" matInput
-             [formControl]="assist1Ctrl"
-             [matAutocomplete]="assist1Auto"
-             (input)="assist1Changed = true"
-             #assist1>
-      <mat-autocomplete autoActiveFirstOption #assist1Auto="matAutocomplete" [displayWith]="playerDisplayFn">
+      <input
+        type="text"
+        matInput
+        [formControl]="assist1Ctrl"
+        [matAutocomplete]="assist1Auto"
+        (input)="assist1Changed = true"
+        #assist1
+      />
+      <mat-autocomplete
+        autoActiveFirstOption
+        #assist1Auto="matAutocomplete"
+        [displayWith]="playerDisplayFn"
+      >
         <mat-option
-          *ngFor="let p of filterPlayers(assist1.value, assist1Changed, [scorer.value, assist2.value], ' -- ei syöttäjää -- ')"
-          [value]="p">
-          {{playerDisplayFn(p)}}
+          *ngFor="
+            let p of filterPlayers(
+              assist1.value,
+              assist1Changed,
+              [scorer.value, assist2.value],
+              ' -- ei syöttäjää -- '
+            )
+          "
+          [value]="p"
+        >
+          {{ playerDisplayFn(p) }}
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>2. syöttäjä</mat-label>
-      <input type="text" matInput
-             [formControl]="assist2Ctrl"
-             [matAutocomplete]="assist2Auto"
-             (input)="assist2Changed = true"
-             (blur)="assist2Changed = false"
-             #assist2>
-      <mat-autocomplete autoActiveFirstOption #assist2Auto="matAutocomplete" [displayWith]="playerDisplayFn">
+      <input
+        type="text"
+        matInput
+        [formControl]="assist2Ctrl"
+        [matAutocomplete]="assist2Auto"
+        (input)="assist2Changed = true"
+        (blur)="assist2Changed = false"
+        #assist2
+      />
+      <mat-autocomplete
+        autoActiveFirstOption
+        #assist2Auto="matAutocomplete"
+        [displayWith]="playerDisplayFn"
+      >
         <mat-option
-          *ngFor="let p of filterPlayers(assist2.value, assist2Changed, [scorer.value, assist1.value], ' -- ei 2. syöttäjää -- ')"
-          [value]="p">
-          {{playerDisplayFn(p)}}
+          *ngFor="
+            let p of filterPlayers(
+              assist2.value,
+              assist2Changed,
+              [scorer.value, assist1.value],
+              ' -- ei 2. syöttäjää -- '
+            )
+          "
+          [value]="p"
+        >
+          {{ playerDisplayFn(p) }}
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
@@ -59,14 +103,25 @@
   <div mat-dialog-content *ngIf="penalty">
     <mat-form-field>
       <mat-label>Rangaistu sika</mat-label>
-      <input type="text" placeholder="Rangaistu sika" matInput
-             [formControl]="pigCtrl"
-             [matAutocomplete]="pigAuto"
-             (input)="pigChanged = true"
-             #pig>
-      <mat-autocomplete autoActiveFirstOption #pigAuto="matAutocomplete" [displayWith]="playerDisplayFn">
-        <mat-option *ngFor="let p of filterPlayers(pig.value, pigChanged)" [value]="p">
-          {{playerDisplayFn(p)}}
+      <input
+        type="text"
+        placeholder="Rangaistu sika"
+        matInput
+        [formControl]="pigCtrl"
+        [matAutocomplete]="pigAuto"
+        (input)="pigChanged = true"
+        #pig
+      />
+      <mat-autocomplete
+        autoActiveFirstOption
+        #pigAuto="matAutocomplete"
+        [displayWith]="playerDisplayFn"
+      >
+        <mat-option
+          *ngFor="let p of filterPlayers(pig.value, pigChanged)"
+          [value]="p"
+        >
+          {{ playerDisplayFn(p) }}
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
@@ -82,8 +137,12 @@
     <mat-form-field>
       <mat-label>Syy</mat-label>
       <mat-select placeholder="Syy" [(value)]="penalty.reason">
-        <mat-option [value]="'Tuntematon rangaistus'">--ei tiedossa--</mat-option>
-        <mat-option *ngFor="let r of penaltyReasons" [value]="r">{{r}}</mat-option>
+        <mat-option [value]="'Tuntematon rangaistus'"
+          >--ei tiedossa--</mat-option
+        >
+        <mat-option *ngFor="let r of penaltyReasons" [value]="r">{{
+          r
+        }}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>

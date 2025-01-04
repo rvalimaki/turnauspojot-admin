@@ -1,10 +1,8 @@
-<br><br>
+<br /><br />
 <form #form="ngForm" (ngSubmit)="onSubmit()">
   <mat-card class="team-card">
     <mat-card-header>
-      <mat-card-title>
-        Lisää joukkue
-      </mat-card-title>
+      <mat-card-title> Lisää joukkue </mat-card-title>
     </mat-card-header>
 
     <mat-card-content>
@@ -14,10 +12,22 @@
         <mat-datepicker disabled="false" #date></mat-datepicker>
       </mat-form-field-->
       <mat-form-field>
-        <input type="text" placeholder="Joukkueen tunnus" matInput [(ngModel)]="team.id" name="id">
+        <input
+          type="text"
+          placeholder="Joukkueen tunnus"
+          matInput
+          [(ngModel)]="team.id"
+          name="id"
+        />
       </mat-form-field>
       <mat-form-field>
-        <input type="text" placeholder="Joukkueen nimi" matInput [(ngModel)]="team.name" name="name">
+        <input
+          type="text"
+          placeholder="Joukkueen nimi"
+          matInput
+          [(ngModel)]="team.name"
+          name="name"
+        />
       </mat-form-field>
     </mat-card-content>
     <mat-card-actions>

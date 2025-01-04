@@ -5,18 +5,25 @@ export class GameEvent {
   home: boolean;
   away: boolean;
 
-  constructor(public team: string, public gameId: string, public gameType: string, public number: string, public eventType: string, homeAway: string,
-              public againstTeam: string) {
+  constructor(
+    public team: string,
+    public gameId: string,
+    public gameType: string,
+    public number: string,
+    public eventType: string,
+    homeAway: string,
+    public againstTeam: string,
+  ) {
     this.date = new Date();
     this.timestamp = this.date.getTime();
 
-    this.id = gameId + '_' + number;
+    this.id = gameId + "_" + number;
 
     switch (homeAway) {
-      case 'home':
+      case "home":
         this.home = true;
         break;
-      case 'away':
+      case "away":
         this.away = true;
         break;
       default:

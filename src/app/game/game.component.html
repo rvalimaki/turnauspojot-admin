@@ -1,35 +1,97 @@
-<div style="display: flex;">
-  <div style="flex:1; padding: 1em;">
-    <h2>Koti: <a (click)="resetStats(game.home)">{{getTeamName(game.home)}}</a> {{game.homeGoals}}</h2>
+<div style="display: flex">
+  <div style="flex: 1; padding: 1em">
+    <h2>
+      Koti: <a (click)="resetStats(game.home)">{{ getTeamName(game.home) }}</a>
+      {{ game.homeGoals }}
+    </h2>
 
     <div>
       <!--mat-card-->
-      <button mat-raised-button color="primary"
-              (click)="addEvent('goal', game.id, game.gameType, nextEventNumber, game.home, 'home', (getHomeGoals + 1) + '-' + getAwayGoals, game.away)">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="
+          addEvent(
+            'goal',
+            game.id,
+            game.gameType,
+            nextEventNumber,
+            game.home,
+            'home',
+            getHomeGoals + 1 + '-' + getAwayGoals,
+            game.away
+          )
+        "
+      >
         <mat-icon>add_circle</mat-icon>
         Maali (koti)
       </button>
       &nbsp;
-      <button mat-raised-button color="warn"
-              (click)="addEvent('penalty', game.id, game.gameType, nextEventNumber, game.home, 'home', '', game.away)">
+      <button
+        mat-raised-button
+        color="warn"
+        (click)="
+          addEvent(
+            'penalty',
+            game.id,
+            game.gameType,
+            nextEventNumber,
+            game.home,
+            'home',
+            '',
+            game.away
+          )
+        "
+      >
         <mat-icon>error</mat-icon>
         Jäähy (koti)
       </button>
       <!--/mat-card-->
     </div>
   </div>
-  <div style="flex:1; padding: 1em;">
-    <h2>{{game.awayGoals}} Vieras: <a (click)="resetStats(game.away)">{{getTeamName(game.away)}}</a></h2>
+  <div style="flex: 1; padding: 1em">
+    <h2>
+      {{ game.awayGoals }} Vieras:
+      <a (click)="resetStats(game.away)">{{ getTeamName(game.away) }}</a>
+    </h2>
     <div>
       <!--mat-card-->
-      <button mat-raised-button color="primary"
-              (click)="addEvent('goal', game.id, game.gameType, nextEventNumber, game.away, 'away', getHomeGoals + '-' + (getAwayGoals + 1), game.home)">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="
+          addEvent(
+            'goal',
+            game.id,
+            game.gameType,
+            nextEventNumber,
+            game.away,
+            'away',
+            getHomeGoals + '-' + (getAwayGoals + 1),
+            game.home
+          )
+        "
+      >
         <mat-icon>add_circle</mat-icon>
         Maali (vieras)
       </button>
       &nbsp;
-      <button mat-raised-button color="warn"
-              (click)="addEvent('penalty', game.id, game.gameType, nextEventNumber, game.away, 'away', '', game.home)">
+      <button
+        mat-raised-button
+        color="warn"
+        (click)="
+          addEvent(
+            'penalty',
+            game.id,
+            game.gameType,
+            nextEventNumber,
+            game.away,
+            'away',
+            '',
+            game.home
+          )
+        "
+      >
         <mat-icon>error</mat-icon>
         Jäähy (vieras)
       </button>
@@ -38,51 +100,66 @@
   </div>
 </div>
 
-
 <table class="tapahtumat">
   <tbody>
-
-  <!--tr class="period">
+    <!--tr class="period">
     <td class="period" colspan="3">1. erä</td>
   </tr-->
 
-  <tr *ngFor="let e of events; let i = index" [class.even]="i%2 !== 0">
-    <ng-template [ngIf]="e.away">
-      <td class="home"></td>
-      <td class="time">{{e.date | date: 'mm:ss'}}</td>
-    </ng-template>
+    <tr *ngFor="let e of events; let i = index" [class.even]="i % 2 !== 0">
+      <ng-template [ngIf]="e.away">
+        <td class="home"></td>
+        <td class="time">{{ e.date | date: "mm:ss" }}</td>
+      </ng-template>
 
-    <td [class.home]="e.home" [class.away]="e.away">
-      <ng-template [ngIf]="e.eventType === 'goal'">
-        <strong><span class="full">#{{getPlayer(e.player)?.number}} </span>{{getPlayerName(e.player)}} {{e.score}}
-        </strong><br>
-        <ng-template [ngIf]="e.assist1 != null"><span class="full">#{{getPlayer(e.assist1)?.number}} </span>
-          {{getPlayerName(e.assist1)}}</ng-template>
-        <ng-template [ngIf]="e.assist2 != null">, <span class="full">#{{getPlayer(e.assist2)?.number}} </span>
-          {{getPlayerName(e.assist2)}}
+      <td [class.home]="e.home" [class.away]="e.away">
+        <ng-template [ngIf]="e.eventType === 'goal'">
+          <strong
+            ><span class="full">#{{ getPlayer(e.player)?.number }} </span
+            >{{ getPlayerName(e.player) }} {{ e.score }} </strong
+          ><br />
+          <ng-template [ngIf]="e.assist1 != null"
+            ><span class="full">#{{ getPlayer(e.assist1)?.number }} </span>
+            {{ getPlayerName(e.assist1) }}</ng-template
+          >
+          <ng-template [ngIf]="e.assist2 != null"
+            >, <span class="full">#{{ getPlayer(e.assist2)?.number }} </span>
+            {{ getPlayerName(e.assist2) }}
+          </ng-template>
         </ng-template>
+
+        <ng-template [ngIf]="e.eventType === 'penalty'">
+          <span class="full">#{{ getPlayer(e.player)?.number }} </span
+          >{{ getPlayerName(e.player) }} {{ e.readable }} {{ e.reason }}
+        </ng-template>
+
+        <button
+          mat-mini-fab
+          (click)="
+            addEvent(
+              e.eventType,
+              game.id,
+              game.gameType,
+              e.number,
+              e.team,
+              e.home ? 'home' : 'away',
+              '',
+              e.againstTeam
+            )
+          "
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+      </td>
+
+      <ng-template [ngIf]="e.home">
+        <td class="time">{{ e.date | date: "mm:ss" }}</td>
+        <td class="away"></td>
       </ng-template>
+    </tr>
 
-      <ng-template [ngIf]="e.eventType === 'penalty'">
-        <span
-          class="full">#{{getPlayer(e.player)?.number}} </span>{{getPlayerName(e.player)}} {{e.readable}} {{e.reason}}
-      </ng-template>
-
-      <button mat-mini-fab
-              (click)="addEvent(e.eventType, game.id, game.gameType, e.number, e.team, e.home ? 'home' : 'away', '', e.againstTeam)">
-        <mat-icon>edit</mat-icon>
-      </button>
-    </td>
-
-    <ng-template [ngIf]="e.home">
-      <td class="time">{{e.date | date: 'mm:ss'}}</td>
-      <td class="away"></td>
-    </ng-template>
-  </tr>
-
-  <!--tr class="period">
+    <!--tr class="period">
     <td class="period" colspan="3">2. erä</td>
   </tr-->
   </tbody>
 </table>
-

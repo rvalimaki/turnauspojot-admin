@@ -1,10 +1,8 @@
-<br><br>
+<br /><br />
 <form #form="ngForm" (ngSubmit)="onSubmit()">
   <mat-card class="team-card">
     <mat-card-header>
-      <mat-card-title>
-        Muokkaa joukkuetta
-      </mat-card-title>
+      <mat-card-title> Muokkaa joukkuetta </mat-card-title>
     </mat-card-header>
 
     <mat-card-content>
@@ -14,14 +12,38 @@
         <mat-datepicker disabled="false" #date></mat-datepicker>
       </mat-form-field-->
       <mat-form-field>
-        <input type="text" disabled placeholder="Joukkueen tunnus" matInput [(ngModel)]="team.id" name="id">
+        <input
+          type="text"
+          disabled
+          placeholder="Joukkueen tunnus"
+          matInput
+          [(ngModel)]="team.id"
+          name="id"
+        />
       </mat-form-field>
       <mat-form-field>
-        <input type="text" placeholder="Joukkueen nimi" matInput [(ngModel)]="team.name" name="name">
+        <input
+          type="text"
+          placeholder="Joukkueen nimi"
+          matInput
+          [(ngModel)]="team.name"
+          name="name"
+        />
       </mat-form-field>
-      <img *ngIf="team.logo" alt="{{team.logo}}" style="height: 100px; width: auto" src="/assets/logos/{{team.logo}}">
+      <img
+        *ngIf="team.logo"
+        alt="{{ team.logo }}"
+        style="height: 100px; width: auto"
+        src="/assets/logos/{{ team.logo }}"
+      />
       <mat-form-field>
-        <input type="text" placeholder="Logo" matInput [(ngModel)]="team.logo" name="logo">
+        <input
+          type="text"
+          placeholder="Logo"
+          matInput
+          [(ngModel)]="team.logo"
+          name="logo"
+        />
       </mat-form-field>
     </mat-card-content>
     <mat-card-actions>
@@ -32,45 +54,56 @@
 
 <mat-divider></mat-divider>
 
-
 <table class="full-width-table" mat-table [dataSource]="getPlayers(team.id)">
   <ng-container matColumnDef="number">
     <mat-header-cell *matHeaderCellDef> #</mat-header-cell>
-    <mat-cell *matCellDef="let row"> {{row.number}} </mat-cell>
+    <mat-cell *matCellDef="let row"> {{ row.number }} </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="firstName">
     <mat-header-cell *matHeaderCellDef> Etunimi</mat-header-cell>
-    <mat-cell *matCellDef="let row"> {{row.firstName}} </mat-cell>
+    <mat-cell *matCellDef="let row"> {{ row.firstName }} </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="funName">
     <mat-header-cell *matHeaderCellDef> Liikanimi</mat-header-cell>
-    <mat-cell *matCellDef="let row"> "{{row.funName}}" </mat-cell>
+    <mat-cell *matCellDef="let row"> "{{ row.funName }}" </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="lastName">
     <mat-header-cell *matHeaderCellDef> Sukunimi</mat-header-cell>
-    <mat-cell *matCellDef="let row"> {{row.lastName}} </mat-cell>
+    <mat-cell *matCellDef="let row"> {{ row.lastName }} </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="actions">
     <mat-header-cell *matHeaderCellDef> Toiminnot</mat-header-cell>
     <mat-cell *matCellDef="let row">
-      <button mat-mini-fab [routerLink]="['/add-player', team.id, team.id + '_' + row.number]">
+      <button
+        mat-mini-fab
+        [routerLink]="['/add-player', team.id, team.id + '_' + row.number]"
+      >
         <mat-icon>edit</mat-icon>
       </button>
       &nbsp;
-      <button mat-mini-fab (click)="confirmRemovePlayer(team.id + '_' + row.number)">
+      <button
+        mat-mini-fab
+        (click)="confirmRemovePlayer(team.id + '_' + row.number)"
+      >
         <mat-icon>delete</mat-icon>
       </button>
     </mat-cell>
   </ng-container>
 
   <!-- Header and Row Declarations -->
-  <mat-header-row *matHeaderRowDef="['number', 'firstName', 'funName', 'lastName', 'actions']"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: ['number', 'firstName', 'funName', 'lastName', 'actions']"></mat-row>
-
+  <mat-header-row
+    *matHeaderRowDef="['number', 'firstName', 'funName', 'lastName', 'actions']"
+  ></mat-header-row>
+  <mat-row
+    *matRowDef="
+      let row;
+      columns: ['number', 'firstName', 'funName', 'lastName', 'actions']
+    "
+  ></mat-row>
 </table>
 
 <mat-divider></mat-divider>

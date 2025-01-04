@@ -1,14 +1,14 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
 
-import {AngularFireDatabase} from '@angular/fire/compat/database';
+import { AngularFireDatabase } from "@angular/fire/compat/database";
 
-import {Subscription} from 'rxjs';
+import { Subscription } from "rxjs";
 
 @Component({
-  selector: 'app-edit-team',
-  templateUrl: './edit-team.component.html',
-  styleUrls: ['./edit-team.component.scss']
+  selector: "app-edit-team",
+  templateUrl: "./edit-team.component.html",
+  styleUrls: ["./edit-team.component.scss"],
 })
 export class EditTeamComponent implements OnInit, OnDestroy {
   team: any = {};
@@ -17,20 +17,26 @@ export class EditTeamComponent implements OnInit, OnDestroy {
   playerSubscription: Subscription;
   private _playerDict: any = {};
 
-  constructor(private db: AngularFireDatabase, private route: ActivatedRoute, private router: Router) {
-  }
+  constructor(
+    private db: AngularFireDatabase,
+    private route: ActivatedRoute,
+    private router: Router,
+  ) {}
 
   ngOnInit() {
-    const key = this.route.snapshot.params['key'];
+    const key = this.route.snapshot.params["key"];
 
-    this.subscription = this.db.object('teams/' + key).snapshotChanges()
-      .subscribe(res => this.team = res.payload.val());
+    this.subscription = this.db
+      .object("teams/" + key)
+      .snapshotChanges()
+      .subscribe((res) => (this.team = res.payload.val()));
 
-    this.playerSubscription = this.db.list('players').valueChanges().subscribe(
-      players => {
+    this.playerSubscription = this.db
+      .list("players")
+      .valueChanges()
+      .subscribe((players) => {
         this.setPlayerDictionary(players);
-      }
-    );
+      });
 
     setTimeout(() => console.log(this.team), 2000);
   }
@@ -41,10 +47,12 @@ export class EditTeamComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    this.db.list('teams').set(this.team.id, this.team)
+    this.db
+      .list("teams")
+      .set(this.team.id, this.team)
       .then(() => {
-        console.log('success');
-        this.router.navigateByUrl('/view-teams');
+        console.log("success");
+        this.router.navigateByUrl("/view-teams");
       });
   }
 
@@ -61,22 +69,26 @@ export class EditTeamComponent implements OnInit, OnDestroy {
       }
 
       this._playerDict[p.team].push(p);
-      this._playerDict[p.team].sort((a, b) => a.number.localeCompare(b.number, [], {numeric: true}));
+      this._playerDict[p.team].sort((a, b) =>
+        a.number.localeCompare(b.number, [], { numeric: true }),
+      );
     }
   }
 
   removePlayer(key: string) {
-    this.db.object('players/' + key).remove().then();
+    this.db
+      .object("players/" + key)
+      .remove()
+      .then();
   }
 
   confirmRemovePlayer(key: string) {
-    const confirmation = confirm('Haluatko varmasti poistaa pelaajan ' + key + '?');
+    const confirmation = confirm(
+      "Haluatko varmasti poistaa pelaajan " + key + "?",
+    );
 
     if (confirmation) {
       this.removePlayer(key);
     }
   }
 }
-
-
-

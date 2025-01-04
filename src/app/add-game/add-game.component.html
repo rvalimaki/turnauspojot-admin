@@ -1,16 +1,20 @@
-<br><br>
+<br /><br />
 <form #form="ngForm" (ngSubmit)="onSubmit()">
   <mat-card class="team-card">
-
     <mat-card-header>
       <mat-card-title>Muokkaa peliä</mat-card-title>
     </mat-card-header>
 
     <mat-card-content *ngIf="game">
-
       <mat-form-field>
         <mat-label>Numero</mat-label>
-        <input type="text" placeholder="Numero" matInput [(ngModel)]="game.id" name="id">
+        <input
+          type="text"
+          placeholder="Numero"
+          matInput
+          [(ngModel)]="game.id"
+          name="id"
+        />
       </mat-form-field>
 
       <mat-form-field>
@@ -24,15 +28,27 @@
 
       <mat-form-field style="display: none">
         <mat-label>Päivämäärä</mat-label>
-        <input disabled matInput placeholder="Valitse päivämäärä..." [(ngModel)]="game.date" name="date"
-               [matDatepicker]="date">
+        <input
+          disabled
+          matInput
+          placeholder="Valitse päivämäärä..."
+          [(ngModel)]="game.date"
+          name="date"
+          [matDatepicker]="date"
+        />
         <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
         <mat-datepicker disabled="false" #date></mat-datepicker>
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Kellonaika</mat-label>
-        <input type="text" placeholder="XX:00" matInput [(ngModel)]="game.schedule" name="schedule">
+        <input
+          type="text"
+          placeholder="XX:00"
+          matInput
+          [(ngModel)]="game.schedule"
+          name="schedule"
+        />
       </mat-form-field>
 
       <mat-form-field>

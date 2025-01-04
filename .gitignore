@@ -40,3 +40,6 @@ testem.log
 Thumbs.db
 
 app/firebaseConfig.ts
+.firebaserc
+apphosting.yaml
+firebase.json

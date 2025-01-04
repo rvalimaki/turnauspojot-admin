@@ -1,14 +1,14 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit } from "@angular/core";
 
-import {ViewTeamsItem} from '../view-teams/view-teams-datasource';
-import {Subscription} from 'rxjs';
-import {ActivatedRoute, Router} from '@angular/router';
-import {AngularFireDatabase} from '@angular/fire/compat/database';
+import { ViewTeamsItem } from "../view-teams/view-teams-datasource";
+import { Subscription } from "rxjs";
+import { ActivatedRoute, Router } from "@angular/router";
+import { AngularFireDatabase } from "@angular/fire/compat/database";
 
 @Component({
-  selector: 'app-add-player',
-  templateUrl: './add-player.component.html',
-  styleUrls: ['./add-player.component.scss']
+  selector: "app-add-player",
+  templateUrl: "./add-player.component.html",
+  styleUrls: ["./add-player.component.scss"],
 })
 export class AddPlayerComponent implements OnInit, OnDestroy {
   teams: any[] = [];
@@ -17,27 +17,34 @@ export class AddPlayerComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   private playerSubscription: Subscription;
 
-  constructor(private db: AngularFireDatabase, private route: ActivatedRoute, private router: Router) {
-
-  }
+  constructor(
+    private db: AngularFireDatabase,
+    private route: ActivatedRoute,
+    private router: Router,
+  ) {}
 
   ngOnInit() {
-    this.player.team = this.route.snapshot.params['teamId'];
+    this.player.team = this.route.snapshot.params["teamId"];
 
-    const key = this.route.snapshot.params['key'];
+    const key = this.route.snapshot.params["key"];
 
-    if (key != null && key !== '') {
-      this.playerSubscription = this.db.object('players/' + key).snapshotChanges()
-        .subscribe(res => this.player = res.payload.val());
+    if (key != null && key !== "") {
+      this.playerSubscription = this.db
+        .object("players/" + key)
+        .snapshotChanges()
+        .subscribe((res) => (this.player = res.payload.val()));
     }
 
-    this.subscription = this.db.list<ViewTeamsItem>('teams').valueChanges().subscribe(data => {
-      this.teams = data;
+    this.subscription = this.db
+      .list<ViewTeamsItem>("teams")
+      .valueChanges()
+      .subscribe((data) => {
+        this.teams = data;
 
-      if (this.player.team == null && this.teams.length > 0) {
-        this.player.team = this.teams[0].id;
-      }
-    });
+        if (this.player.team == null && this.teams.length > 0) {
+          this.player.team = this.teams[0].id;
+        }
+      });
   }
 
   ngOnDestroy() {
@@ -49,9 +56,11 @@ export class AddPlayerComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    this.db.list('players').set(this.player.team + '_' + this.player.number, this.player)
+    this.db
+      .list("players")
+      .set(this.player.team + "_" + this.player.number, this.player)
       .then(() => {
-        this.router.navigateByUrl('/edit-team/' + this.player.team).then();
+        this.router.navigateByUrl("/edit-team/" + this.player.team).then();
       });
   }
 }

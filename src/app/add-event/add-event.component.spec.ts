@@ -1,16 +1,15 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import {AddEventComponent} from './add-event.component';
+import { AddEventComponent } from "./add-event.component";
 
-describe('AddEventComponent', () => {
+describe("AddEventComponent", () => {
   let component: AddEventComponent;
   let fixture: ComponentFixture<AddEventComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AddEventComponent]
-    })
-      .compileComponents();
+      declarations: [AddEventComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('AddEventComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

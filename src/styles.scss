@@ -2,74 +2,74 @@ $mdc-typography-supporting-font-family: Roboto, "Helvetica Neue", sans-serif;
 
 /* For use in src/lib/core/theming/_palette.scss */
 $mat-perhe-blue: (
-  50 : #e3e6ea,
-  100 : #b9bfcb,
-  200 : #8b95a9,
-  300 : #5c6b87,
-  400 : #394b6d,
-  500 : #162b53,
-  600 : #13264c,
-  700 : #102042,
-  800 : #0c1a39,
-  900 : #061029,
-  A100 : #6487ff,
-  A200 : #3160ff,
-  A400 : #0039fd,
-  A700 : #0033e4,
+  50: #e3e6ea,
+  100: #b9bfcb,
+  200: #8b95a9,
+  300: #5c6b87,
+  400: #394b6d,
+  500: #162b53,
+  600: #13264c,
+  700: #102042,
+  800: #0c1a39,
+  900: #061029,
+  A100: #6487ff,
+  A200: #3160ff,
+  A400: #0039fd,
+  A700: #0033e4,
   contrast: (
-    50 : #000000,
-    100 : #000000,
-    200 : #000000,
-    300 : #ffffff,
-    400 : #ffffff,
-    500 : #ffffff,
-    600 : #ffffff,
-    700 : #ffffff,
-    800 : #ffffff,
-    900 : #ffffff,
-    A100 : #000000,
-    A200 : #ffffff,
-    A400 : #ffffff,
-    A700 : #ffffff,
-  )
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #ffffff,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #ffffff,
+    A400: #ffffff,
+    A700: #ffffff,
+  ),
 );
 
 $mat-perhe-red: (
-  50 : #ebe3e4,
-  100 : #ccb9ba,
-  200 : #aa8b8d,
-  300 : #885d5f,
-  400 : #6f3a3c,
-  500 : #55171a,
-  600 : #4e1417,
-  700 : #441113,
-  800 : #3b0d0f,
-  900 : #2a0708,
-  A100 : #ff6666,
-  A200 : #ff3333,
-  A400 : #ff0000,
-  A700 : #e60000,
+  50: #ebe3e4,
+  100: #ccb9ba,
+  200: #aa8b8d,
+  300: #885d5f,
+  400: #6f3a3c,
+  500: #55171a,
+  600: #4e1417,
+  700: #441113,
+  800: #3b0d0f,
+  900: #2a0708,
+  A100: #ff6666,
+  A200: #ff3333,
+  A400: #ff0000,
+  A700: #e60000,
   contrast: (
-    50 : #000000,
-    100 : #000000,
-    200 : #000000,
-    300 : #ffffff,
-    400 : #ffffff,
-    500 : #ffffff,
-    600 : #ffffff,
-    700 : #ffffff,
-    800 : #ffffff,
-    900 : #ffffff,
-    A100 : #000000,
-    A200 : #ffffff,
-    A400 : #ffffff,
-    A700 : #ffffff,
-  )
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #ffffff,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #ffffff,
+    A400: #ffffff,
+    A700: #ffffff,
+  ),
 );
 
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
-@use '@angular/material' as mat;
+@use "@angular/material" as mat;
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -82,21 +82,25 @@ $mat-perhe-red: (
 // hue. Available color palettes: https://material.io/design/color/
 $perhe-primary: mat.define-palette($mat-perhe-blue);
 $perhe-accent: mat.define-palette($mat-perhe-red, A200, A100, A400);
-$perhe-typography: mat.define-typography-config($font-family: 'Roboto');
+$perhe-typography: mat.define-typography-config(
+  $font-family: "Roboto",
+);
 
 // The warn palette is optional (defaults to red).
 $perhe-warn: mat.define-palette($mat-perhe-red);
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$perhe-theme: mat.define-light-theme((
-  color: (
-    primary: $perhe-primary,
-    accent: $perhe-accent,
-    warn: $perhe-warn,
-  ),
-  typography: $perhe-typography
-));
+$perhe-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $perhe-primary,
+      accent: $perhe-accent,
+      warn: $perhe-warn,
+    ),
+    typography: $perhe-typography,
+  )
+);
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
@@ -105,7 +109,10 @@ $perhe-theme: mat.define-light-theme((
 
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
+html,
+body {
+  height: 100%;
+}
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;

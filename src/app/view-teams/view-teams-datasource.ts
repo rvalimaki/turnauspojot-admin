@@ -1,8 +1,8 @@
-import {DataSource} from '@angular/cdk/collections';
-import {map} from 'rxjs/operators';
-import {merge, Observable, of as observableOf} from 'rxjs';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatSort} from '@angular/material/sort';
+import { DataSource } from "@angular/cdk/collections";
+import { map } from "rxjs/operators";
+import { merge, Observable, of as observableOf } from "rxjs";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatSort } from "@angular/material/sort";
 
 export interface ViewTeamsItem {
   id: string;
@@ -17,7 +17,10 @@ export interface ViewTeamsItem {
 export class ViewTeamsDataSource extends DataSource<ViewTeamsItem> {
   data: ViewTeamsItem[] = [];
 
-  constructor(private paginator: MatPaginator, private sort: MatSort) {
+  constructor(
+    private paginator: MatPaginator,
+    private sort: MatSort,
+  ) {
     super();
   }
 
@@ -32,7 +35,7 @@ export class ViewTeamsDataSource extends DataSource<ViewTeamsItem> {
     const dataMutations = [
       observableOf(this.data),
       this.paginator != null ? this.paginator.page : [],
-      this.sort != null ? this.sort.sortChange : []
+      this.sort != null ? this.sort.sortChange : [],
     ];
 
     // Set the paginator's length
@@ -40,25 +43,31 @@ export class ViewTeamsDataSource extends DataSource<ViewTeamsItem> {
       this.paginator.length = this.data.length;
     }
 
-    return merge(...dataMutations).pipe(map(() => {
-      return this.getPagedData(this.getSortedData([...this.data]));
-    }));
+    return merge(...dataMutations).pipe(
+      map(() => {
+        return this.getPagedData(this.getSortedData([...this.data]));
+      }),
+    );
   }
 
   /**
    *  Called when the table is being destroyed. Use this function, to clean up
    * any open connections or free any held resources that were set up during connect.
    */
-  disconnect() {
-  }
+  disconnect() {}
 
   /**
    * Paginate the data (client-side). If you're using server-side pagination,
    * this would be replaced by requesting the appropriate data from the server.
    */
   private getPagedData(data: ViewTeamsItem[]) {
-    const startIndex = this.paginator ? this.paginator.pageIndex * this.paginator.pageSize : 0;
-    return data.splice(startIndex, this.paginator != null ? this.paginator.pageSize : 100);
+    const startIndex = this.paginator
+      ? this.paginator.pageIndex * this.paginator.pageSize
+      : 0;
+    return data.splice(
+      startIndex,
+      this.paginator != null ? this.paginator.pageSize : 100,
+    );
   }
 
   /**
@@ -70,16 +79,16 @@ export class ViewTeamsDataSource extends DataSource<ViewTeamsItem> {
       return [];
     }
 
-    if (this.sort == null || !this.sort.active || this.sort.direction === '') {
+    if (this.sort == null || !this.sort.active || this.sort.direction === "") {
       return data;
     }
 
     return data.sort((a, b) => {
-      const isAsc = this.sort.direction === 'asc';
+      const isAsc = this.sort.direction === "asc";
       switch (this.sort.active) {
-        case 'id':
+        case "id":
           return compare(a.id, b.id, isAsc);
-        case 'name':
+        case "name":
           return compare(a.name, b.name, isAsc);
         default:
           return 0;

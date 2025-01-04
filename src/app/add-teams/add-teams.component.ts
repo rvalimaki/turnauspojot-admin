@@ -1,29 +1,26 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 
-import {AngularFireDatabase} from '@angular/fire/compat/database';
+import { AngularFireDatabase } from "@angular/fire/compat/database";
 
 @Component({
-  selector: 'app-add-teams',
-  templateUrl: './add-teams.component.html',
-  styleUrls: ['./add-teams.component.scss']
+  selector: "app-add-teams",
+  templateUrl: "./add-teams.component.html",
+  styleUrls: ["./add-teams.component.scss"],
 })
 export class AddTeamsComponent implements OnInit {
-
   team: any = {};
 
-  constructor(private db: AngularFireDatabase) {
+  constructor(private db: AngularFireDatabase) {}
 
-  }
-
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
   onSubmit() {
-    this.db.list('teams').set(this.team.id, this.team)
+    this.db
+      .list("teams")
+      .set(this.team.id, this.team)
       .then(() => {
         this.team = {};
-        console.log('success');
+        console.log("success");
       });
   }
 }
