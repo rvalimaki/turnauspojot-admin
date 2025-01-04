@@ -70,18 +70,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "turnaus-admin:build"
+            "buildTarget": "turnaus-admin:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "turnaus-admin:build:production"
+              "buildTarget": "turnaus-admin:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "turnaus-admin:build"
+            "buildTarget": "turnaus-admin:build"
           }
         },
         "test": {
