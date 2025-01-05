@@ -25,7 +25,11 @@
       >
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>Turnauspojot - Hallinta</span>
+      <span>Turnauspojot - </span>
+      <span *ngIf="user | async as user"
+        >&nbsp;{{ user.displayName }}
+        <button (click)="signOut()">Kirjaudu ulos</button></span
+      >
     </mat-toolbar>
     <router-outlet></router-outlet>
   </mat-sidenav-content>

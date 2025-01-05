@@ -23,6 +23,7 @@ import { GeneralComponent } from "./general/general.component";
 import { firebaseConfig } from "./firebaseConfig";
 import { AngularFireModule } from "@angular/fire/compat";
 import { AngularFireDatabaseModule } from "@angular/fire/compat/database";
+import { AngularFireAuthModule } from "@angular/fire/compat/auth";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatButtonModule } from "@angular/material/button";
@@ -68,6 +69,7 @@ registerLocaleData(localeFi);
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
+    AngularFireAuthModule,
     LayoutModule,
     MatDialogModule,
     MatToolbarModule,
