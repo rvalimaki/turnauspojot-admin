@@ -1,0 +1,72 @@
+.roster {
+  display: block;
+  width: 100%;
+  height: 600px;
+  position: relative;
+
+  &.hidden {
+    display: none;
+  }
+
+  app-jersey {
+    position: absolute;
+
+    &.hidden,
+    &.line-0 {
+      display: none;
+    }
+
+    &.pos-VH {
+      left: 10px;
+    }
+
+    &.pos-KH {
+      left: 110px;
+    }
+
+    &.pos-OH {
+      left: 210px;
+    }
+
+    &.pos-VP {
+      left: 60px;
+    }
+
+    &.pos-OP {
+      left: 160px;
+    }
+
+    &.pos-MV {
+      bottom: 10px;
+
+      left: 10px;
+    }
+
+    &.line-1:not(.pos-MV) {
+      top: 10px;
+
+      &.pos-VP,
+      &.pos-OP {
+        top: 110px;
+      }
+    }
+
+    &.line-2:not(.pos-MV) {
+      top: 250px;
+
+      &.pos-VP,
+      &.pos-OP {
+        top: 350px;
+      }
+    }
+
+    &.line-3:not(.pos-MV) {
+      top: 450px;
+
+      &.pos-VP,
+      &.pos-OP {
+        top: 670px;
+      }
+    }
+  }
+}

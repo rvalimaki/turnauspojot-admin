@@ -12,6 +12,22 @@ import { AngularFireDatabase } from "@angular/fire/compat/database";
 })
 export class AddPlayerComponent implements OnInit, OnDestroy {
   teams: any[] = [];
+  positions: any[] = [
+    { id: "", name: "?" },
+    { id: "MV", name: "Maalivahti" },
+    { id: "VP", name: "Vasen puolustaja" },
+    { id: "OP", name: "Oikea puolustaja" },
+    { id: "VH", name: "Vasen laitahyökkääjä" },
+    { id: "KH", name: "Keskuhyökkääjä" },
+    { id: "OH", name: "Oikea laitahyökkääjä" },
+  ];
+  lines: any[] = [
+    { id: 1, name: "1." },
+    { id: 2, name: "2." },
+    { id: 3, name: "3." },
+    { id: 4, name: "4." },
+    { id: 0, name: "Vilttiketju" },
+  ];
   player: any = {};
 
   private subscription: Subscription;
@@ -20,7 +36,7 @@ export class AddPlayerComponent implements OnInit, OnDestroy {
   constructor(
     private db: AngularFireDatabase,
     private route: ActivatedRoute,
-    private router: Router,
+    private router: Router
   ) {}
 
   ngOnInit() {

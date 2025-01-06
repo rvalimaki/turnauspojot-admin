@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 
 import { AngularFireDatabase } from "@angular/fire/compat/database";
@@ -6,6 +6,7 @@ import { AngularFireDatabase } from "@angular/fire/compat/database";
 import { Subscription } from "rxjs";
 
 @Component({
+  encapsulation: ViewEncapsulation.None,
   selector: "app-edit-team",
   templateUrl: "./edit-team.component.html",
   styleUrls: ["./edit-team.component.scss"],
@@ -20,7 +21,7 @@ export class EditTeamComponent implements OnInit, OnDestroy {
   constructor(
     private db: AngularFireDatabase,
     private route: ActivatedRoute,
-    private router: Router,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -70,7 +71,7 @@ export class EditTeamComponent implements OnInit, OnDestroy {
 
       this._playerDict[p.team].push(p);
       this._playerDict[p.team].sort((a, b) =>
-        a.number.localeCompare(b.number, [], { numeric: true }),
+        a.number.localeCompare(b.number, [], { numeric: true })
       );
     }
   }
@@ -84,7 +85,7 @@ export class EditTeamComponent implements OnInit, OnDestroy {
 
   confirmRemovePlayer(key: string) {
     const confirmation = confirm(
-      "Haluatko varmasti poistaa pelaajan " + key + "?",
+      "Haluatko varmasti poistaa pelaajan " + key + "?"
     );
 
     if (confirmation) {
